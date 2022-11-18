@@ -1,0 +1,39 @@
+﻿  Display.cpp
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(109,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(110,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(115,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(116,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(119,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Matrix.cpp
+  PixelShader.cpp
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(109,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(110,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(115,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(116,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(119,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Renderer.cpp
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(109,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(110,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(115,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(116,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(119,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(85,57): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(85,40): warning C4244: 'argument': conversion from 'const int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(188,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(262,66): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(262,53): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\Renderer.cpp(262,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+  SoftwareRenderer.cpp
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(109,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(110,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(115,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(116,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(119,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  VertexShader.cpp
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(109,16): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(110,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(115,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(116,1): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+F:\code-backup\10\1\SoftwareRenderer\SoftwareRenderer\PixelShader.h(119,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  SoftwareRenderer.vcxproj -> F:\code-backup\10\1\SoftwareRenderer\x64\Debug\SoftwareRenderer.exe
