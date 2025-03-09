@@ -1,0 +1,71 @@
+# Visual Studio specific
+.vscode/
+*.code-workspace
+
+# Build artifacts
+Debug/
+Release/
+x64/
+x86/
+ARM/
+ARM64/
+*.obj
+*.exe
+*.dll
+*.lib
+*.pdb
+*.ilk
+*.exp
+*.idb
+*.ipch
+*.iobj
+*.ipdb
+*.rsp
+*.tlog
+*.log
+*.sdf
+*.opendb
+*.VC.db
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+CMakeLists.txt.user
+
+# Visual Studio solution and project files
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.VC.opendb
+*.VC.opendb
+
+# Backup and generated files
+*.bak
+*.swp
+*.swn
+*.swo
+
+# Ignore dependencies
+packages/
+node_modules/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore custom configuration files
+*.local
+*.cache
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore all contents of SMFL folder except the folder itself
+SMFL/*
+!.gitkeep
