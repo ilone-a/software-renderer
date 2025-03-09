@@ -72,6 +72,7 @@ SMFL/*
 
 # Ignore all contents of x64 folder except the folder itself
 x64/
+!.gitkeep
 
 # Ignore all contents of .vs folder except the folder itself
 .vs/*

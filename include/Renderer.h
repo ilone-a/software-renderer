@@ -7,7 +7,7 @@
 
 class Renderer {
 public:
-    Renderer(int width, int height);
+    Renderer(unsigned int width, unsigned int height);
     void run();
 private:
     void processEvents();

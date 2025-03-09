@@ -1,11 +1,12 @@
 #include "../include/Renderer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-/*
+#include <optional>
+
 using namespace sf;
 
-Renderer::Renderer(int width, int height)
-    : window(sf::VideoMode(width, height), "Software Renderer") {}
+Renderer::Renderer(unsigned int width, unsigned int height)
+    : window(sf::VideoMode( Vector2u { width, height }), "Software Renderer") {}
 
 void Renderer::run() {
     while (window.isOpen()) {
@@ -15,16 +16,16 @@ void Renderer::run() {
 }
 
 void Renderer::processEvents() {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            window.close();
+    while (window.isOpen()) {
+        while (const std::optional event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
     }
 }
 
 void Renderer::render() {
     window.clear(sf::Color::Black);
-    // Тут будет рендеринг
+    // Render here
     window.display();
 }
-*/
