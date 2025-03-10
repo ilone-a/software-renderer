@@ -1,5 +1,7 @@
 #pragma once
 
+//Geometry classes types
+
 struct Vec3 {
     float x, y, z;
 };

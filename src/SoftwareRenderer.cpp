@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+//main loop
 
 using namespace sf;
 

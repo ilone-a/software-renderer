@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RENDERER_H
-#define RENDERER_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -9,17 +7,16 @@
 
 class Renderer {
 public:
-    Renderer(unsigned int width, unsigned int height);
+	Renderer(unsigned int width, unsigned int height);
 
-    void run();
+	void run();
 private:
-    void processEvents();
-    void render();
-    sf::Image framebuffer;
-    sf::RenderWindow window;
-    
+	void processEvents();
+	void render();
+	sf::Image framebuffer;
+	sf::RenderWindow window;
+	sf::Vector2f calculateOffset();
+	void scaleModel(std::vector<Triangle>& model);
 
-    std::vector<Triangle> model;
+	std::vector<Triangle> model;
 };
-
-#endif // RENDERER_H

@@ -1,5 +1,9 @@
 # Changelog
 
+## [11.03.2025]
+### Changed
+- Added flat render of blender teapot model in render window center.
+
 ## [Unreleased]
 ### Added
 - Added `.gitignore`, ignoring the contents of the `SMFL` folder but keeping the folder itself.

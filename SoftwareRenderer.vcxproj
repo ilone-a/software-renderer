@@ -144,6 +144,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\MathUtils.h" />
     <ClInclude Include="include\ObjectLoader.h" />
     <ClInclude Include="include\Renderer.h" />
