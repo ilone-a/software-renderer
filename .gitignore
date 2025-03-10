@@ -77,3 +77,5 @@ x64/
 # Ignore all contents of .vs folder except the folder itself
 .vs/*
 !.gitkeep
+x64/Release/SoftwareRenderer.exe
+x64/Release/SoftwareRenderer.pdb
