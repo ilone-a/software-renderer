@@ -2,7 +2,8 @@
 // Light.h
 #ifndef LIGHT_H
 #define LIGHT_H
-
+#include <vector>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 class Light {
@@ -19,6 +20,7 @@ public:
 		float distance = std::sqrt(std::pow(point.x - position.x, 2) + std::pow(point.y - position.y, 2));
 		return intensity / (distance * distance + 1);  // 
 	}
+
 };
 
 #endif // LIGHT_H
