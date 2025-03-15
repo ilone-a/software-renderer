@@ -6,7 +6,7 @@
 #include <algorithm>
 #include "ObjectLoader.h"
 #include "MathUtils.h"
-#include "Stencil.h"
+
 
 using namespace sf;
 class Renderer {
@@ -25,7 +25,7 @@ private:
 	//Main
 	void processEvents();
 	void render();
-
+	
 	//Rasterize
 	void drawTriangleScanline(const Triangle& triangle);
 
