@@ -9,23 +9,28 @@
 
 
 using namespace sf;
+using namespace MathUtils;
 class Renderer {
 public:
 	Renderer(unsigned int width, unsigned int height);
 	VertexArray pixels;
 	int width; int height;
-
+	std::vector<Triangle> model;//opened file to render
 	void run();
 private:
 	sf::RenderWindow window;
-	std::vector<Triangle> model;//opened file to render
+
 	std::vector<int> stencilBuffer;
 
-
+	float interpolationFactor;
+	Mat4 targetTransform;
+	Mat4 transform;
+	Mat4 generateRandomTransform();
 	//Main
 	void processEvents();
 	void render();
-	
+	void render2();
+	void update();
 	//Rasterize
 	void drawTriangleScanline(const Triangle& triangle);
 

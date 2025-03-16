@@ -1,12 +1,13 @@
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <optional>
 #include <algorithm>
 #include "../include/Light.h"
 #include "../include/Renderer.h"
+#include "../include/MathUtils.h"
 
 using namespace sf;
+using namespace MathUtils;
 
 //Init
 Renderer::Renderer(unsigned int width, unsigned int height)
@@ -26,7 +27,9 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 void Renderer::run() {
 	while (window.isOpen()) {
 		processEvents();
-		render();
+		update();
+		//render();
+		render2();
 	}
 }
 
@@ -37,6 +40,61 @@ void Renderer::processEvents() {
 			window.close();
 	}
 }
+
+void Renderer::update() {
+	interpolationFactor += 0.1f;
+	if (interpolationFactor > 1.0f) {
+		interpolationFactor = 0.0f;
+		targetTransform = generateRandomTransform();
+	}
+	transform = mat4_lerp(transform, targetTransform, interpolationFactor);
+
+	// Р”РІРёРіР°РµРј РјРѕРґРµР»СЊ РЅР° 100 РїРёРєСЃРµР»РµР№ РІР»РµРІРѕ-РІРїСЂР°РІРѕ
+	float movement = sin(interpolationFactor * 3.14159265f) * 100.0f;
+	transform.m[3][0] += movement;
+}
+
+Mat4 Renderer::generateRandomTransform() {
+	Mat4 t = Mat4::identity();
+	return t;
+}
+
+
+
+
+
+void Renderer::render2() {
+	window.clear(Color::Black);
+	pixels.clear();
+	stencilBuffer.assign(width * height, 1.0f);
+
+	// Clear z-buffer
+	stencilBuffer.assign(width * height, 1.0f);
+
+	scaleModel(model);
+	Vector2f offset = calculateOffset();
+
+	for (Triangle& triangle : model) {
+		moveTriangle(triangle, offset);
+	}
+
+	for (Triangle& triangle : model) {
+		Triangle transformed;
+		transformed.v0 = mat4_mul_vec3(transform, triangle.v0);
+		transformed.v1 = mat4_mul_vec3(transform, triangle.v1);
+		transformed.v2 = mat4_mul_vec3(transform, triangle.v2);
+		drawTriangleScanline(transformed);
+	}
+
+	window.draw(pixels);
+	window.display();
+}
+
+
+
+
+
+
 
 // Renderer settings: offset
 // Move the model to window center
@@ -100,7 +158,6 @@ void Renderer::scaleModel(std::vector<Triangle>& model) {
 
 
 
-
 //TODO: mark as debug function
 void Renderer::drawDebugEdges(const Triangle& triangle) {
 	// Directly draw the edges of the triangle by connecting the vertices
@@ -151,7 +208,7 @@ void Renderer::moveTriangle(Triangle& triangle, Vector2f& offset)
 //Scanline method: sort points
 void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
-	// Сортируем вершины по Y
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ Y
 	auto sortVerticesY = [](Vec3& a, Vec3& b) {
 		return a.y < b.y;
 		};
@@ -168,7 +225,7 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
 	// Interp to calculate X
 	auto interpolate = [](float y1, float y2, float x1, float x2, float y) {
-		if (y1 == y2) return x1; // Избегаем деления на ноль
+		if (y1 == y2) return x1; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 		return x1 + (x2 - x1) * ((y - y1) / (y2 - y1));
 		};
 	//Fragment
@@ -234,7 +291,7 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 		drawScanline(y, xA, xB); // 
 	}
 }
-
+/*
 void Renderer::render() {
 	window.clear(Color::Black);
 	pixels.clear();
@@ -252,3 +309,4 @@ void Renderer::render() {
 	window.draw(pixels);
 	window.display();
 }
+*/

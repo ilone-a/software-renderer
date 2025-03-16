@@ -5,7 +5,7 @@
 #include "MathUtils.h"
 
 using namespace std;
-
+using namespace MathUtils;
 class ObjLoader {
 public:
 	//Load model from file (default: teapot.obj)
