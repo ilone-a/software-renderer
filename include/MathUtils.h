@@ -11,6 +11,8 @@
 {
     struct Vec3 {
         float x, y, z;
+        Vec3() = default;  // Конструктор по умолчанию
+        Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
     };
 
     struct Triangle {
@@ -29,7 +31,7 @@
         float min() const;
         float max() const;
     };
-
+    Vec3 lerp(const Vec3& a, const Vec3& b, float t); 
     Mat4 mat4_mul(const Mat4& a, const Mat4& b);
     Vec3 mat4_mul_vec3(const Mat4& m, const Vec3& v);
     Mat4 mat4_transpose(const Mat4& m);

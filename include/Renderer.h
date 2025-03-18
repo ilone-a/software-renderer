@@ -29,7 +29,6 @@ private:
 	//Main
 	void processEvents();
 	void render();
-	void render2();
 	void update();
 	//Rasterize
 	void drawTriangleScanline(const Triangle& triangle);

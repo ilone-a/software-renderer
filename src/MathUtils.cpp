@@ -22,7 +22,14 @@ namespace MathUtils {
     float Vec2::max() const {
         return (x > y) ? x : y;
     }
-
+    Vec3 lerp(const Vec3& a, const Vec3& b, float t)
+    {
+        return {
+            a.x * (1.0f - t) + b.x * t,
+            a.y * (1.0f - t) + b.y * t,
+            a.z * (1.0f - t) + b.z * t
+        };
+    }
     Mat4 mat4_mul(const Mat4& a, const Mat4& b) {
         Mat4 result = {};
         for (int i = 0; i < 4; ++i) {

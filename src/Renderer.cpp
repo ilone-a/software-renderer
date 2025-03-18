@@ -16,20 +16,15 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 	height(height),
 	pixels(PrimitiveType::Points, 0),
 	stencilBuffer(width* height, std::numeric_limits<float>::infinity())
-	//stencilBuffer(width* height, 0) 
 {
-
 	model = ObjLoader::Load("./models/teapot.obj"); // TODO remove
-	//updateStencilBuffer(); // TODO change update point
-
 }
 
 void Renderer::run() {
 	while (window.isOpen()) {
 		processEvents();
 		update();
-		//render();
-		render2();
+		render();
 	}
 }
 
@@ -63,7 +58,7 @@ Mat4 Renderer::generateRandomTransform() {
 
 
 
-void Renderer::render2() {
+void Renderer::render() {
 	window.clear(Color::Black);
 	pixels.clear();
 	stencilBuffer.assign(width * height, 1.0f);
@@ -79,11 +74,7 @@ void Renderer::render2() {
 	}
 
 	for (Triangle& triangle : model) {
-		Triangle transformed;
-		transformed.v0 = mat4_mul_vec3(transform, triangle.v0);
-		transformed.v1 = mat4_mul_vec3(transform, triangle.v1);
-		transformed.v2 = mat4_mul_vec3(transform, triangle.v2);
-		drawTriangleScanline(transformed);
+		drawTriangleScanline(triangle);
 	}
 
 	window.draw(pixels);
@@ -208,7 +199,6 @@ void Renderer::moveTriangle(Triangle& triangle, Vector2f& offset)
 //Scanline method: sort points
 void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
-	// ��������� ������� �� Y
 	auto sortVerticesY = [](Vec3& a, Vec3& b) {
 		return a.y < b.y;
 		};
@@ -291,22 +281,3 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 		drawScanline(y, xA, xB); // 
 	}
 }
-/*
-void Renderer::render() {
-	window.clear(Color::Black);
-	pixels.clear();
-	// Clear z-buffer
-	stencilBuffer.assign(width * height, 1.0f);
-
-	scaleModel(model);
-	Vector2f offset = calculateOffset();
-
-	for (Triangle& triangle : model) {
-		moveTriangle(triangle, offset);
-		drawTriangleScanline(triangle);
-	}
-
-	window.draw(pixels);
-	window.display();
-}
-*/
