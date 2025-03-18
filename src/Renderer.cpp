@@ -2,12 +2,21 @@
 #include <SFML/Window.hpp>
 #include <optional>
 #include <algorithm>
+#include <chrono>
 #include "../include/Light.h"
 #include "../include/Renderer.h"
 #include "../include/MathUtils.h"
 
 using namespace sf;
 using namespace MathUtils;
+
+using namespace std::chrono;
+
+#define PROFILE_SCOPE(name) Profiler profiler##__LINE__(name);
+
+
+//};
+
 
 //Init
 Renderer::Renderer(unsigned int width, unsigned int height)
@@ -22,6 +31,7 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 
 void Renderer::run() {
 	while (window.isOpen()) {
+		PROFILE_SCOPE("Frame");
 		processEvents();
 		update();
 		render();
@@ -37,16 +47,7 @@ void Renderer::processEvents() {
 }
 
 void Renderer::update() {
-	interpolationFactor += 0.1f;
-	if (interpolationFactor > 1.0f) {
-		interpolationFactor = 0.0f;
-		targetTransform = generateRandomTransform();
-	}
-	transform = mat4_lerp(transform, targetTransform, interpolationFactor);
 
-	// Двигаем модель на 100 пикселей влево-вправо
-	float movement = sin(interpolationFactor * 3.14159265f) * 100.0f;
-	transform.m[3][0] += movement;
 }
 
 Mat4 Renderer::generateRandomTransform() {
@@ -199,6 +200,8 @@ void Renderer::moveTriangle(Triangle& triangle, Vector2f& offset)
 //Scanline method: sort points
 void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
+	//PROFILE_SCOPE("drawTriangleScanline");
+
 	auto sortVerticesY = [](Vec3& a, Vec3& b) {
 		return a.y < b.y;
 		};
@@ -264,20 +267,39 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 			}
 		}
 		};
+	int yStart, yEnd;
+
 
 	// Top triangle part (from v0 to v1)
+	/*
 	for (int y = static_cast<int>(v0.y); y <= static_cast<int>(v1.y); ++y) {
 		// Left right bounds (interp between  v0, v2 and v0, v1)
 		float xA = interpolate(v0.y, v2.y, v0.x, v2.x, y); // Left bound
 		float xB = interpolate(v0.y, v1.y, v0.x, v1.x, y); // Right bound
 		drawScanline(y, xA, xB); // Draw scanline forthis  Y
+	}*/
+	yStart = static_cast<int>(v0.y);
+	yEnd = static_cast<int>(v1.y);
+
+	if (yStart < yEnd)
+	{
+		for (int y = yStart; y <= yEnd; ++y) {
+			float xA = interpolate(v0.y, v2.y, v0.x, v2.x, y);
+			float xB = interpolate(v0.y, v1.y, v0.x, v1.x, y);
+			drawScanline(y, xA, xB);
+		}
 	}
 
 	// Bottom triangle part  (from v1 to v2)
-	for (int y = static_cast<int>(v1.y); y <= static_cast<int>(v2.y); ++y) {
-		// Left right bounds (interp between  v0, v2 and v1, v2)
-		float xA = interpolate(v0.y, v2.y, v0.x, v2.x, y); // Left bound
-		float xB = interpolate(v1.y, v2.y, v1.x, v2.x, y); // Right bound
-		drawScanline(y, xA, xB); // 
+	yStart = static_cast<int>(v1.y);
+	yEnd = static_cast<int>(v2.y);
+
+	if (yStart < yEnd)
+	{
+		for (int y = yStart; y <= yEnd; ++y) {
+			float xA = interpolate(v0.y, v2.y, v0.x, v2.x, y);
+			float xB = interpolate(v1.y, v2.y, v1.x, v2.x, y);
+			drawScanline(y, xA, xB);
+		}
 	}
 }

@@ -148,6 +148,7 @@
     <ClInclude Include="include\Light.h" />
     <ClInclude Include="include\MathUtils.h" />
     <ClInclude Include="include\ObjectLoader.h" />
+    <ClInclude Include="include\Profiler.h" />
     <ClInclude Include="include\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

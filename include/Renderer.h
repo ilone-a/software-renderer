@@ -6,7 +6,9 @@
 #include <algorithm>
 #include "ObjectLoader.h"
 #include "MathUtils.h"
-
+#include "Profiler.h"
+#include <chrono>
+using namespace std::chrono;
 
 using namespace sf;
 using namespace MathUtils;
@@ -17,6 +19,7 @@ public:
 	int width; int height;
 	std::vector<Triangle> model;//opened file to render
 	void run();
+
 private:
 	sf::RenderWindow window;
 
