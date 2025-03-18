@@ -19,7 +19,7 @@ using namespace std;
 		~Profiler() {
 			auto end = std::chrono::high_resolution_clock::now();
 			auto duration = std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count();
-			fps = 1 / duration;
+			fps = 1.0f / duration;
 			if (duration > 2e-6) { // 2 микросекунды
 				//printf("%s took %.6f seconds\n", name.c_str(), duration);
 				printf("%s took %.3f frames per second\n", name.c_str(), fps);

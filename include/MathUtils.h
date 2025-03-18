@@ -18,7 +18,7 @@
     struct Triangle {
         Vec3 v0, v1, v2;
     };
-
+    bool isPointInTriangle(const Vec3& p, const Vec3& v0, const Vec3& v1, const Vec3& v2);
     struct Mat4 {
         float m[4][4];
 

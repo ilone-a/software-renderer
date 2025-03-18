@@ -218,21 +218,11 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
 	// Interp to calculate X
 	auto interpolate = [](float y1, float y2, float x1, float x2, float y) {
-		if (y1 == y2) return x1; // �������� ������� �� ����
+		if (y1 == y2) return x1; // 
 		return x1 + (x2 - x1) * ((y - y1) / (y2 - y1));
 		};
 	//Fragment
-	// Check if pont is inside triangle (barycentric coords)
-	auto isPointInTriangle = [](const Vec3& p, const Vec3& v0, const Vec3& v1, const Vec3& v2) {
-		// barycentric coords
-		float denom = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
-		float a = ((v1.y - v2.y) * (p.x - v2.x) + (v2.x - v1.x) * (p.y - v2.y)) / denom;
-		float b = ((v2.y - v0.y) * (p.x - v2.x) + (v0.x - v2.x) * (p.y - v2.y)) / denom;
-		float c = 1.0f - a - b;
-
-		// If coords >= 0, then inside
-		return a >= 0 && b >= 0 && c >= 0;
-		};
+	// Check if point is inside triangle (barycentric coords) - to MathUtils::isPointInTriangle
 
 	// Scan line draw
 	auto drawScanline = [&](int y, float x1, float x2) {
@@ -244,10 +234,15 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 		x2 = std::max(0.0f, std::min(window.getSize().x - 1.0f, x2));
 
 		// Draw pixels between x1 and x2
+
+		int winWidth = static_cast<int>(window.getSize().x);
+		int winHeight = static_cast<int>(window.getSize().y);
+
 		for (int x = static_cast<int>(std::ceil(x1)); x <= static_cast<int>(std::floor(x2)); ++x) {
-			if (x >= 0 && x < window.getSize().x && y >= 0 && y < window.getSize().y) {
-				// Check if pont is inside triangle
-				if (isPointInTriangle(Vec3{ float(x), float(y), 0 }, v0, v1, v2)) {
+			if (x >= 0 && x < winWidth && y >= 0 && y < winHeight) {
+
+				// Check if point is inside triangle
+				if (MathUtils::isPointInTriangle(Vec3{ float(x), float(y), 0 }, v0, v1, v2)) {
 					// Interp z for current pixel
 					float z = interpolate(v0.y, v2.y, v0.z, v2.z, y); // Interp depth (z)
 					int index = y * width + x; // Index in z-buf
@@ -271,13 +266,6 @@ void Renderer::drawTriangleScanline(const Triangle& triangle) {
 
 
 	// Top triangle part (from v0 to v1)
-	/*
-	for (int y = static_cast<int>(v0.y); y <= static_cast<int>(v1.y); ++y) {
-		// Left right bounds (interp between  v0, v2 and v0, v1)
-		float xA = interpolate(v0.y, v2.y, v0.x, v2.x, y); // Left bound
-		float xB = interpolate(v0.y, v1.y, v0.x, v1.x, y); // Right bound
-		drawScanline(y, xA, xB); // Draw scanline forthis  Y
-	}*/
 	yStart = static_cast<int>(v0.y);
 	yEnd = static_cast<int>(v1.y);
 

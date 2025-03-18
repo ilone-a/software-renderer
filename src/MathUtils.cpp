@@ -12,7 +12,14 @@ namespace MathUtils {
         }
         return result;
     }
+    bool isPointInTriangle(const Vec3& p, const Vec3& v0, const Vec3& v1, const Vec3& v2) {
+        float denom = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
+        float a = ((v1.y - v2.y) * (p.x - v2.x) + (v2.x - v1.x) * (p.y - v2.y)) / denom;
+        float b = ((v2.y - v0.y) * (p.x - v2.x) + (v0.x - v2.x) * (p.y - v2.y)) / denom;
+        float c = 1.0f - a - b;
 
+        return a >= 0 && b >= 0 && c >= 0;
+    }
     Vec2::Vec2(float x, float y) : x(x), y(y) {}
 
     float Vec2::min() const {

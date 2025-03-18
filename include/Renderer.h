@@ -23,7 +23,7 @@ public:
 private:
 	sf::RenderWindow window;
 
-	std::vector<int> stencilBuffer;
+	std::vector<float> stencilBuffer;//float cause stencil is used as Zbuf
 
 	float interpolationFactor;
 	Mat4 targetTransform;
