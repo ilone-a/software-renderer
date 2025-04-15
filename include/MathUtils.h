@@ -2,10 +2,8 @@
 
 #include <cmath>
 #include <cstdio>
-
 #include <cstring>
 
-#include <cmath>
 
     namespace MathUtils
 {
@@ -70,18 +68,6 @@
                 Matrix m(DefaultConstruct::kTrivial);
                 m.setToPerspective(fov, aspect, near, far); return m;
             };
-
-
-
-
-
-            /*
-            Matrix operator * (const Matrix& m) const
-            {
-                Matrix res(DefaultConstruct::kTrivial);
-                mtxMultiply(res, *this, m);
-                return res;
-            }*/
 
             static Matrix& mtxMultiply(Matrix& r, const Matrix& a, const Matrix& b)
             {
@@ -156,18 +142,21 @@
                     w = w / value;
             };
 
+            Vector4 operator *(const MathUtils::Matrix& mat) const {
+                Vector4 r;
+                r.x = x * mat.rc[0][0] + y * mat.rc[0][1] + z * mat.rc[0][2] + w * mat.rc[0][3];
+                r.y = x * mat.rc[1][0] + y * mat.rc[1][1] + z * mat.rc[1][2] + w * mat.rc[1][3];
+                r.z = x * mat.rc[2][0] + y * mat.rc[2][1] + z * mat.rc[2][2] + w * mat.rc[2][3];
+                r.w = x * mat.rc[3][0] + y * mat.rc[3][1] + z * mat.rc[3][2] + w * mat.rc[3][3];
+                return r;
+            }
+
         };////
-    /// <summary>
-        template <typename VertexAttributes>
-        class RasterizerVertex
-        {
-        public:
-            Vector4 location;
-            VertexAttributes attr;
-        public:
-            RasterizerVertex();
-            RasterizerVertex(Vector4 location, VertexAttributes param);
-        };
+      //  template<typename T>
+      //  struct RasterizerVertex {
+       //     T location;
+      //  };
+
         struct Point3d
         {
             float x, y, z;
@@ -193,25 +182,7 @@
                 dst.x = x; dst.y = y; dst.z = z;
             }
         };
-        /// <summary>
-        /// ///
-        /// </summary>
-        /// <typeparam name="VertexAttributes"></typeparam>
 
-        template<typename VertexAttributes>
-        inline RasterizerVertex<VertexAttributes>::RasterizerVertex()
-        {
-            location = Vector4(0.0f, 0.0f, 0.0f, 1.0f); //xyzw
-        }
-
-        template<typename VertexAttributes>
-        inline RasterizerVertex<VertexAttributes>::RasterizerVertex(Vector4 location, VertexAttributes param)
-        {
-            this->location = location;
-            attr = param;
-        }
-
-    /// </summary>
     struct Vec3 {
         float x, y, z;
         Vec3() = default;  // Конструктор по умолчанию

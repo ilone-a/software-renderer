@@ -119,7 +119,7 @@ void Renderer::render() {
 	transformedModel = model;
 
 	for (Triangle& triangle : transformedModel) {
-		SoftRender::RasterizerVertex<SoftRender::Vector4> verts[3];
+		SoftRender::RasterizerVertex<MathUtils::Vector4> verts[3];
 		verts[0].location = { triangle.v0.x, triangle.v0.y, triangle.v0.z, 1.0f };
 		verts[1].location = { triangle.v1.x, triangle.v1.y, triangle.v1.z, 1.0f };
 		verts[2].location = { triangle.v2.x, triangle.v2.y, triangle.v2.z, 1.0f };

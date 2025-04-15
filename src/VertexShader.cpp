@@ -6,19 +6,6 @@
 
 namespace SoftRender {
 
-	struct Vector4 {
-		float x, y, z, w;
-
-		Vector4 operator *(const MathUtils::Matrix& mat) const {
-			Vector4 r;
-			r.x = x * mat.rc[0][0] + y * mat.rc[0][1] + z * mat.rc[0][2] + w * mat.rc[0][3];
-			r.y = x * mat.rc[1][0] + y * mat.rc[1][1] + z * mat.rc[1][2] + w * mat.rc[1][3];
-			r.z = x * mat.rc[2][0] + y * mat.rc[2][1] + z * mat.rc[2][2] + w * mat.rc[2][3];
-			r.w = x * mat.rc[3][0] + y * mat.rc[3][1] + z * mat.rc[3][2] + w * mat.rc[3][3];
-			return r;
-		}
-	};
-
 	template<typename T>
 	struct RasterizerVertex {
 		T location;
@@ -40,7 +27,7 @@ namespace SoftRender {
 			return matrixToCreate;
 		}
 
-		void transform_triangle(RasterizerVertex<Vector4> vec4[3], const MathUtils::Matrix& m) {
+		void transform_triangle(RasterizerVertex<MathUtils::Vector4> vec4[3], const MathUtils::Matrix& m) {
 			for (int i = 0; i < 3; ++i)
 				vec4[i].location = vec4[i].location * m;
 		}
