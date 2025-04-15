@@ -12,9 +12,13 @@
 using namespace sf;
 using namespace MathUtils;
 using namespace std::chrono;
+
+
+Light g_Light(sf::Vector2f(400.f, 300.f), 5000.f);
 #define PROFILE_SCOPE(name) Profiler profiler##__LINE__(name);
 #define USE_IS_POINT_IN_TRIANGLE 1
 
+// Main renderer class
 Renderer::Renderer(unsigned int width, unsigned int height)
 	: window(sf::VideoMode(Vector2u{ width, height }), "Software Renderer"),
 	width(width),
@@ -25,15 +29,17 @@ Renderer::Renderer(unsigned int width, unsigned int height)
 	model = ObjLoader::Load("./models/teapot.obj");
 }
 
+// Main loop entry point
 void Renderer::run() {
 	while (window.isOpen()) {
 		PROFILE_SCOPE("Frame");
 		processEvents();
-		update();
+		//update();
 		render();
 	}
 }
 
+// Handles user input and window events
 void Renderer::processEvents() {
 	while (const std::optional<sf::Event> event = window.pollEvent()) {
 		if (event->is<sf::Event::Closed>())
@@ -41,12 +47,15 @@ void Renderer::processEvents() {
 	}
 }
 
-void Renderer::update() {}
+//// Update scene logic (currently empty)
+//void Renderer::update() {}
 
+// Generates a random transform matrix
 Mat4 Renderer::generateRandomTransform() {
 	return Mat4::identity();
 }
 
+//Point-in-triangle using barycentric coordinates
 static bool isPointInTriangle(const MathUtils::Vec3& p, const MathUtils::Vec3& v0, const MathUtils::Vec3& v1, const MathUtils::Vec3& v2) {
 	float denom = (v1.y - v2.y) * (v0.x - v2.x) + (v2.x - v1.x) * (v0.y - v2.y);
 	if (std::abs(denom) < 1e-5f) return false;
@@ -56,8 +65,10 @@ static bool isPointInTriangle(const MathUtils::Vec3& p, const MathUtils::Vec3& v
 	return a >= -0.01f && b >= -0.01f && c >= -0.01f;
 }
 
+// Draws a filled triangle using a scanline-style loop and point-in-triangle test
 void Renderer::drawTriangleScanline(const MathUtils::Triangle& triangle) {
-	//std::cout << "[Scanline] Drawing triangle\n";
+	extern Light g_Light;
+
 	MathUtils::Vec3 v0 = triangle.v0;
 	MathUtils::Vec3 v1 = triangle.v1;
 	MathUtils::Vec3 v2 = triangle.v2;
@@ -85,10 +96,17 @@ void Renderer::drawTriangleScanline(const MathUtils::Triangle& triangle) {
 			if (MathUtils::isPointInTriangle(p, v0, v1, v2)) {
 				float z = (v0.z + v1.z + v2.z) /20.0f;
 				float minZ = -1.0f, maxZ = 1.0f;
-				int gray = static_cast<int>(512 * (1.0f - (z - minZ) / (maxZ - minZ)));
-				gray = std::clamp(gray, 0, 255);
-				pixels.append(Vertex{sf::Vector2f(p.x, p.y), sf::Color(gray, gray, gray)
-			});
+				//int gray = static_cast<int>(512 * (1.0f - (z - minZ) / (maxZ - minZ)));
+				//gray = std::clamp(gray, 0, 255);
+				//pixels.append(Vertex{sf::Vector2f(p.x, p.y), sf::Color(gray, gray, gray)			});
+				// 
+				// 
+				// calculate lighting at current point
+				sf::Vector2f screenPos{ p.x, p.y };
+				float light = g_Light.getLighting(screenPos);
+				light = std::clamp(light, 0.0f, 1.0f);
+				int brightness = static_cast<int>(255 * light);
+				pixels.append(Vertex{ screenPos, sf::Color(brightness, brightness, brightness) });
 			}
 #else
 			float w0 = (v1.x - v0.x) * (p.y - v0.y) - (v1.y - v0.y) * (p.x - v0.x);
@@ -101,17 +119,19 @@ void Renderer::drawTriangleScanline(const MathUtils::Triangle& triangle) {
 		}
 	}
 }
+
+// Main render pass: clear, transform mesh, rasterize triangles, display result
 void Renderer::render() {
 	std::cout << "[Render] Starting frame\n";
 	window.clear(sf::Color::Black);
 	pixels.clear();
 	stencilBuffer.assign(width * height, 1.0f);
 
-	MathUtils::Matrix m2s(MathUtils::kTrivial);
+	MathUtils::Matrix m2s(MathUtils::kEmpty);
 	SoftRender::VertexShader vs(width, height);
 	vs.modelToScreen(m2s);
 
-
+	Light g_Light(sf::Vector2f(width / 2.0f, height / 2.0f), 5000.0f); // move it
 	std::cout << "[Render] Model-to-Screen Matrix:\n";
 
 	std::vector<Triangle> transformedModel;
@@ -148,6 +168,7 @@ void Renderer::render() {
 }
 
 //TODO: mark as debug function
+// Draws white lines along triangle edges
 void Renderer::drawDebugEdges(const Triangle& triangle) {
 	// Directly draw the edges of the triangle by connecting the vertices
 	auto drawLine = [&](Vec3 vStart, Vec3 vEnd) {

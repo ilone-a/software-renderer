@@ -7,11 +7,15 @@
 #include "ObjectLoader.h"
 #include "MathUtils.h"
 #include "Profiler.h"
+#include "Light.h"
 #include <chrono>
 using namespace std::chrono;
 
 using namespace sf;
 using namespace MathUtils;
+
+
+
 class Renderer {
 public:
 	Renderer(unsigned int width, unsigned int height);
@@ -34,7 +38,8 @@ private:
 	//Main
 	void processEvents();
 	void render();
-	void update();
+	//void update();
+	// 
 	//Rasterize
 	void drawTriangleScanline(const Triangle& triangle);
 

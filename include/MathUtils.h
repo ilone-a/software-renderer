@@ -7,14 +7,11 @@
 
     namespace MathUtils
 {
-//legacy
-        enum DefaultConstruct { kTrivial };
+        enum DefaultConstruct { kEmpty };
   
         class Matrix
         {
             static const Matrix kIdentity;
-
-
         public:
             float rc[4][4]; //get row get column
             Matrix() { this->setToIdentity(); }
@@ -29,7 +26,7 @@
             void setToScreenspace(float width, float height);
             void setToPerspective(float fov, float aspect, float near, float far);
             Matrix operator *(const Matrix& other) const {
-                Matrix result(kTrivial);
+                Matrix result(kEmpty);
                 memset(result.rc, 0, sizeof(result.rc));
                 for (int i = 0; i < 4; ++i)
                     for (int j = 0; j < 4; ++j)
@@ -42,30 +39,30 @@
 
             static Matrix translation(float x, float y, float z)
             {
-                Matrix m(DefaultConstruct::kTrivial);
+                Matrix m(DefaultConstruct::kEmpty);
                 m.setToTranslation(x, y, z); return m;
             };
 
             static Matrix rotation(float angle)
             {
-                Matrix m(DefaultConstruct::kTrivial);
+                Matrix m(DefaultConstruct::kEmpty);
                 m.setToRotationX(angle); return m;
             };
             static Matrix scaling(float x, float y, float z)
             {
-                Matrix m(DefaultConstruct::kTrivial);
+                Matrix m(DefaultConstruct::kEmpty);
                 m.setToScaling(x, y, z); return m;
             };
 
             static Matrix screenspace(float width, float height)
             {
-                Matrix m(DefaultConstruct::kTrivial);
+                Matrix m(DefaultConstruct::kEmpty);
                 m.setToScreenspace(width, height); return m;
             };
 
             static Matrix perspective(float fov, float aspect, float near, float far)
             {
-                Matrix m(DefaultConstruct::kTrivial);
+                Matrix m(DefaultConstruct::kEmpty);
                 m.setToPerspective(fov, aspect, near, far); return m;
             };
 
@@ -73,7 +70,7 @@
             {
                 if ((&r != &a) && (&r != &b))
                     return mtxMultiplyNoOverlap(r, a, b);
-                Matrix tmp(kTrivial);
+                Matrix tmp(kEmpty);
                 mtxMultiplyNoOverlap(tmp, a, b);
                 return (r = tmp);
             }
@@ -152,10 +149,7 @@
             }
 
         };////
-      //  template<typename T>
-      //  struct RasterizerVertex {
-       //     T location;
-      //  };
+
 
         struct Point3d
         {
@@ -185,7 +179,7 @@
 
     struct Vec3 {
         float x, y, z;
-        Vec3() = default;  // Конструктор по умолчанию
+        Vec3() = default;  // 
         Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
     };
 
@@ -210,5 +204,5 @@
     Vec3 mat4_mul_vec3(const Mat4& m, const Vec3& v);
     Mat4 mat4_transpose(const Mat4& m);
     Mat4 mat4_lerp(const Mat4& a, const Mat4& b, float t);
-    void mat4_print(const Mat4& m);
+    
 }

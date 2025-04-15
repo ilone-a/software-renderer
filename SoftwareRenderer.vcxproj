@@ -143,6 +143,7 @@
     <ClCompile Include="src\SoftwareRenderer.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\projects2\SoftwareRenderer\SMFL\include\SFML;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <ClCompile Include="src\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Light.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="include\ObjectLoader.h" />
     <ClInclude Include="include\Profiler.h" />
     <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\VertexShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

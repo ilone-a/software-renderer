@@ -16,13 +16,15 @@ namespace SoftRender {
 		VertexShader(int width, int height) : width_(width), height_(height) {}
 
 		MathUtils::Matrix& modelToScreen(MathUtils::Matrix& matrixToCreate) {
-			//Matrix transform = Matrix::translation(0.05f, 0.05f, -20.0f);
-			MathUtils::Matrix rotate = MathUtils::Matrix::rotation(0.025f);
-			//Matrix scale = Matrix::scaling(100.0f, 100.0f, 100.0f);
+
+			MathUtils::Matrix rotate = MathUtils::Matrix();
 			MathUtils::Matrix perspective = MathUtils::Matrix::perspective(3.14f / 1.5f, float(width_) / float(height_), 0.01f, 1000.0f);
+			//MathUtils::Matrix screen = MathUtils::Matrix::screenspace(float(width_), float(height_));
 			MathUtils::Matrix screen = MathUtils::Matrix::screenspace(float(width_), float(height_));
+			screen = screen * MathUtils::Matrix::scaling(1.0f, -1.0f, 1.0f);  // invert y for sfml
+
 			MathUtils::Matrix scale = MathUtils::Matrix::scaling(1.0f, 1.0f, 1.0f);
-			MathUtils::Matrix transform = MathUtils::Matrix::translation(0.0f, 0.0f, -5.0f);  // ближе к экрану
+			MathUtils::Matrix transform = MathUtils::Matrix::translation(0.0f, 0.0f, -5.0f);  // 
 			matrixToCreate = screen * perspective * transform * rotate * scale;
 			return matrixToCreate;
 		}
