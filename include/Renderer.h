@@ -21,6 +21,10 @@ public:
 	void run();
 
 private:
+
+	void legacy_transform_triangle(RasterizerVertex<Vector4> vec4[3], Matrix& transform_matrix);
+
+
 	sf::RenderWindow window;
 
 	std::vector<float> stencilBuffer;//float cause stencil is used as Zbuf
