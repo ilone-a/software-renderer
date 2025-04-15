@@ -57,7 +57,7 @@ static bool isPointInTriangle(const MathUtils::Vec3& p, const MathUtils::Vec3& v
 }
 
 void Renderer::drawTriangleScanline(const MathUtils::Triangle& triangle) {
-	std::cout << "[Scanline] Drawing triangle\n";
+	//std::cout << "[Scanline] Drawing triangle\n";
 	MathUtils::Vec3 v0 = triangle.v0;
 	MathUtils::Vec3 v1 = triangle.v1;
 	MathUtils::Vec3 v2 = triangle.v2;
@@ -83,7 +83,12 @@ void Renderer::drawTriangleScanline(const MathUtils::Triangle& triangle) {
 			MathUtils::Vec3 p{ float(x) + 0.5f, float(y) + 0.5f, 0.0f };
 #if USE_IS_POINT_IN_TRIANGLE
 			if (MathUtils::isPointInTriangle(p, v0, v1, v2)) {
-				pixels.append(Vertex{ sf::Vector2f(p.x, p.y), sf::Color::Green });
+				float z = (v0.z + v1.z + v2.z) /20.0f;
+				float minZ = -1.0f, maxZ = 1.0f;
+				int gray = static_cast<int>(512 * (1.0f - (z - minZ) / (maxZ - minZ)));
+				gray = std::clamp(gray, 0, 255);
+				pixels.append(Vertex{sf::Vector2f(p.x, p.y), sf::Color(gray, gray, gray)
+			});
 			}
 #else
 			float w0 = (v1.x - v0.x) * (p.y - v0.y) - (v1.y - v0.y) * (p.x - v0.x);
@@ -102,30 +107,15 @@ void Renderer::render() {
 	pixels.clear();
 	stencilBuffer.assign(width * height, 1.0f);
 
-	SoftRender::Matrix m2s(SoftRender::kTrivial);
+	MathUtils::Matrix m2s(MathUtils::kTrivial);
 	SoftRender::VertexShader vs(width, height);
 	vs.modelToScreen(m2s);
 
 
 	std::cout << "[Render] Model-to-Screen Matrix:\n";
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			std::cout << m2s.rc[i][j] << "\t";
-		}
-		std::cout << "\n";
-	}
 
 	std::vector<Triangle> transformedModel;
-//	transformedModel.push_back({
-	//	{-0.5f, -0.5f, 1.0f},
-	//	{ 0.5f, -0.5f, 1.0f},
-	//	{ 0.0f,  0.5f, 1.0f}
-	//	});
 
-	//for (Triangle& triangle : transformedModel) {
-	//	SoftRender::RasterizerVertex<SoftRender::Vector4> verts[3];
-	//	verts[0].location = { triangle.v0.x, triangle.v0.y, triangle.v0.z, 1.0f };
-		// Load the teapot model into transformedModel
 	transformedModel = model;
 
 	for (Triangle& triangle : transformedModel) {
@@ -147,32 +137,6 @@ void Renderer::render() {
 		triangle.v1 = { verts[1].location.x, verts[1].location.y, verts[1].location.z };
 		triangle.v2 = { verts[2].location.x, verts[2].location.y, verts[2].location.z };
 	};
-		//verts[1].location = { triangle.v1.x, triangle.v1.y, triangle.v1.z, 1.0f };
-		//verts[2].location = { triangle.v2.x, triangle.v2.y, triangle.v2.z, 1.0f };
-
-	//	std::cout << "[Transform] Before: "
-		//	<< triangle.v0.x << "," << triangle.v0.y << " | "
-		//	<< triangle.v1.x << "," << triangle.v1.y << " | "
-		//	<< triangle.v2.x << "," << triangle.v2.y << "\n";
-
-		//vs.transform_triangle(verts, m2s);
-/*
-		for (int i = 0; i < 3; ++i) {
-			float w = verts[i].location.w;
-			verts[i].location.x /= w;
-			verts[i].location.y /= w;
-			verts[i].location.z /= w;
-		}
-
-		triangle.v0 = { verts[0].location.x, verts[0].location.y, verts[0].location.z };
-		triangle.v1 = { verts[1].location.x, verts[1].location.y, verts[1].location.z };
-		triangle.v2 = { verts[2].location.x, verts[2].location.y, verts[2].location.z };
-		
-		std::cout << "[Transform] After: "
-			<< triangle.v0.x << "," << triangle.v0.y << " | "
-			<< triangle.v1.x << "," << triangle.v1.y << " | "
-			<< triangle.v2.x << "," << triangle.v2.y << "\n";
-	}*/
 
 	for (const Triangle& triangle : transformedModel) {
 		drawTriangleScanline(triangle);
@@ -182,3 +146,38 @@ void Renderer::render() {
 	window.draw(pixels);
 	window.display();
 }
+
+//TODO: mark as debug function
+void Renderer::drawDebugEdges(const Triangle& triangle) {
+	// Directly draw the edges of the triangle by connecting the vertices
+	auto drawLine = [&](Vec3 vStart, Vec3 vEnd) {
+		// Make sure we are in the window's bounds
+		if (vStart.x < 0 || vStart.x >= window.getSize().x || vEnd.x < 0 || vEnd.x >= window.getSize().x ||
+			vStart.y < 0 || vStart.y >= window.getSize().y || vEnd.y < 0 || vEnd.y >= window.getSize().y) {
+			return; // Don't draw lines out of the window bounds
+		}
+		// Interpolate points to draw the line between them (Bresenham or simple interpolation)
+		float dx = vEnd.x - vStart.x;
+		float dy = vEnd.y - vStart.y;
+		int steps = std::max(abs(dx), abs(dy));  // How many steps to interpolate
+		float xInc = dx / static_cast<float>(steps);
+		float yInc = dy / static_cast<float>(steps);
+
+		float x = vStart.x;
+		float y = vStart.y;
+
+		for (int i = 0; i <= steps; ++i) {
+			if (x >= 0 && x < window.getSize().x && y >= 0 && y < window.getSize().y) {
+				pixels.append(Vertex{ sf::Vector2f(static_cast<float>(x), static_cast<float>(y)), sf::Color::White });
+			}
+			x += xInc;
+			y += yInc;
+		}
+		};
+
+	// Draw edges between vertices
+	drawLine(triangle.v0, triangle.v1);  // v0 -> v1
+	drawLine(triangle.v1, triangle.v2);  // v1 -> v2
+	drawLine(triangle.v2, triangle.v0);  // v2 -> v0
+}
+

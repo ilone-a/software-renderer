@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdio>
 
-
+#include <cstring>
 
 #include <cmath>
 
@@ -30,7 +30,15 @@
 
             void setToScreenspace(float width, float height);
             void setToPerspective(float fov, float aspect, float near, float far);
-
+            Matrix operator *(const Matrix& other) const {
+                Matrix result(kTrivial);
+                memset(result.rc, 0, sizeof(result.rc));
+                for (int i = 0; i < 4; ++i)
+                    for (int j = 0; j < 4; ++j)
+                        for (int k = 0; k < 4; ++k)
+                            result.rc[i][j] += rc[i][k] * other.rc[k][j];
+                return result;
+            }
 
 
 
@@ -67,13 +75,13 @@
 
 
 
-
+            /*
             Matrix operator * (const Matrix& m) const
             {
                 Matrix res(DefaultConstruct::kTrivial);
                 mtxMultiply(res, *this, m);
                 return res;
-            }
+            }*/
 
             static Matrix& mtxMultiply(Matrix& r, const Matrix& a, const Matrix& b)
             {

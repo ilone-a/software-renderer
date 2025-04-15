@@ -42,8 +42,8 @@ private:
 
 	//Renderer Settings
 	sf::Vector2f calculateOffset();
-	void scaleModel(std::vector<Triangle>& model);
-	void moveTriangle(Triangle& triangle, Vector2f& offset);
+	//void scaleModel(std::vector<Triangle>& model);
+	//void moveTriangle(Triangle& triangle, Vector2f& offset);
 
 	//Renderer Debug
 	void drawDebugEdges(const Triangle& triangle);
